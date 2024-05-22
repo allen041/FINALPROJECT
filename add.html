@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="add.css">
+    <title>ParkUbian Entry Form</title>
+    
+</head>
+
+<div class="navbar">
+		
+    <img src="parkubian_logo-removebg-preview.png" class="logo">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html" class="abt">About</a></li>
+    <li><a class="active" href="add.html">Student</a></li>
+    <li><a href="Faculty.html">Faculty</a></li>
+    <li><a href="login.html">Logout</a></li> 
+</div>
+
+
+<body>
+    <div class="container">
+        <form id="vehicleForm">
+            <div class="form-group">
+                <label for="idNo">Plate No:</label>
+                <input type="text" id="idNo" name="idNo" required>
+            </div>
+            <div class="form-group">
+                <label for="vehicleType">Vehicle Type:</label>
+                <select id="vehicleType" name="vehicleType" required>
+                    <option value="motor">Motorcycle</option>
+                    <option value="Sedan">Sedan</option>
+                    <option value="SUV">SUV</option>
+                    <option value="Bike">Bike</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="timeIn">Time In:</label>
+                <input type="time" id="timeIn" name="timeIn" required>
+            </div>
+            <div class="form-group">
+                <label for="timeOut">Time Out:</label>
+                <input type="time" id="timeOut" name="timeOut" required>
+            </div>
+            <button type="submit">Add Entry</button>
+        </form>
+        <button onclick="viewEntries()">View Entries</button>
+    </div>
+
+    <script>
+        const maxSlots = 15;
+
+        document.getElementById('vehicleForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const idNo = document.getElementById('idNo').value;
+            const vehicleType = document.getElementById('vehicleType').value;
+            const timeIn = document.getElementById('timeIn').value;
+            const timeOut = document.getElementById('timeOut').value;
+
+            const entry = { idNo, vehicleType, timeIn, timeOut };
+            let entries = JSON.parse(localStorage.getItem('entries')) || [];
+
+            if (entries.length < maxSlots) {
+                entries.push(entry);
+                localStorage.setItem('entries', JSON.stringify(entries));
+                alert("Entry added successfully");
+            } else {
+                alert("No available slots");
+            }
+
+            document.getElementById('vehicleForm').reset();
+        });
+
+        function viewEntries() {
+            window.location.href = 'view.html';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="view.css">
+    <title>ParkUbian Entries</title>
+    
+</head>
+
+<div class="navbar">
+		
+    <img src="parkubian_logo-removebg-preview.png" class="logo">
+    <li><a href="redirect.html">Home</a></li>
+    <li><a href="about.html" class="abt">About</a></li>
+    <li><a class="active" href="add.html">Student</a></li>
+    <li><a href="Faculty.html">Faculty</a></li>
+    <li><a href="login.php">Logout</a></li> 
+</div>
+
+<body>
+    <div class="container">
+        <h2>ParkUbian Entries</h2>
+        <div class="available-slots" id="availableSlots"></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Plate No</th>
+                    <th>Vehicle Type</th>
+                    <th>Time In</th>
+                    <th>Time Out</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="entries">
+                <!-- Entries will be injected here -->
+            </tbody>
+        </table>
+        <button class="back-button" onclick="backToForm()">Back to Form</button>
+    </div>
+
+    <script>
+        const maxSlots = 15;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            let entries = JSON.parse(localStorage.getItem('entries')) || [];
+            const entriesContainer = document.getElementById('entries');
+
+            entries.forEach((entry, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${entry.idNo}</td>
+                    <td>${entry.vehicleType}</td>
+                    <td>${entry.timeIn}</td>
+                    <td>${entry.timeOut}</td>
+                    <td><button onclick="deleteEntry(${index})">Delete</button></td>
+                `;
+                entriesContainer.appendChild(row);
+            });
+
+            const availableSlots = maxSlots - entries.length;
+            document.getElementById('availableSlots').textContent = `Available Slots: ${availableSlots}`;
+        });
+
+        function deleteEntry(index) {
+            let entries = JSON.parse(localStorage.getItem('entries')) || [];
+            entries.splice(index, 1);
+            localStorage.setItem('entries', JSON.stringify(entries));
+            location.reload();
+            alert("Entry will be delete");
+        }
+
+        function backToForm() {
+            window.location.href = 'add.html';
+        }
+    </script>
+</body>
+</html>
